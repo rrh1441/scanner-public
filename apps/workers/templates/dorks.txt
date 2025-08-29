@@ -1,0 +1,94 @@
+site:DOMAIN filetype:pdf
+site:DOMAIN filetype:doc
+site:DOMAIN filetype:docx  
+site:DOMAIN filetype:xls
+site:DOMAIN filetype:xlsx
+site:DOMAIN filetype:ppt
+site:DOMAIN filetype:pptx
+site:DOMAIN filetype:txt
+site:DOMAIN filetype:csv
+site:DOMAIN filetype:sql
+site:DOMAIN filetype:log
+site:DOMAIN filetype:zip
+site:DOMAIN filetype:tar
+site:DOMAIN filetype:gz
+site:DOMAIN filetype:backup
+site:DOMAIN filetype:bak
+site:DOMAIN filetype:old
+COMPANY_NAME filetype:pdf
+COMPANY_NAME filetype:doc
+COMPANY_NAME filetype:docx
+COMPANY_NAME filetype:xls
+COMPANY_NAME filetype:xlsx
+COMPANY_NAME "confidential" filetype:pdf
+COMPANY_NAME "internal" filetype:pdf
+COMPANY_NAME "private" filetype:pdf
+COMPANY_NAME "financial" filetype:pdf
+COMPANY_NAME "budget" filetype:pdf
+COMPANY_NAME "salary" filetype:pdf
+COMPANY_NAME "contract" filetype:pdf
+COMPANY_NAME "agreement" filetype:pdf
+COMPANY_NAME "employee" filetype:pdf
+COMPANY_NAME "org chart" filetype:pdf
+COMPANY_NAME "organization chart" filetype:pdf
+COMPANY_NAME "database" filetype:sql
+COMPANY_NAME "backup" filetype:sql
+COMPANY_NAME "dump" filetype:sql
+COMPANY_NAME "config" filetype:txt
+COMPANY_NAME "configuration" filetype:txt
+COMPANY_NAME "password" filetype:txt
+COMPANY_NAME "passwords" filetype:txt
+COMPANY_NAME "credentials" filetype:txt
+COMPANY_NAME "api key" filetype:txt
+COMPANY_NAME "secret" filetype:txt
+COMPANY_NAME "token" filetype:txt
+site:github.com COMPANY_NAME
+site:gitlab.com COMPANY_NAME
+site:bitbucket.org COMPANY_NAME
+site:pastebin.com COMPANY_NAME
+site:paste.ee COMPANY_NAME
+site:justpaste.it COMPANY_NAME
+site:rentry.co COMPANY_NAME
+inurl:"wp-config.php.txt" COMPANY_NAME
+inurl:".env" COMPANY_NAME
+inurl:"config.php" COMPANY_NAME
+inurl:"settings.php" COMPANY_NAME
+inurl:"database.yml" COMPANY_NAME
+inurl:"credentials.json" COMPANY_NAME
+inurl:"secrets.yml" COMPANY_NAME
+intitle:"index of" COMPANY_NAME
+intitle:"directory listing" COMPANY_NAME
+COMPANY_NAME intext:"mysql_connect"
+COMPANY_NAME intext:"mysql_pconnect"
+COMPANY_NAME intext:"pg_connect"
+COMPANY_NAME intext:"mssql_connect"
+COMPANY_NAME intext:"oracle_connect"
+COMPANY_NAME intext:"mongodb://"
+COMPANY_NAME intext:"postgres://"
+COMPANY_NAME intext:"redis://"
+COMPANY_NAME intext:"ftp://"
+COMPANY_NAME intext:"sftp://"
+COMPANY_NAME ext:env
+COMPANY_NAME ext:ini
+COMPANY_NAME ext:cfg
+COMPANY_NAME ext:conf
+COMPANY_NAME ext:config
+COMPANY_NAME ext:properties
+COMPANY_NAME ext:yaml
+COMPANY_NAME ext:yml
+COMPANY_NAME ext:json "password"
+COMPANY_NAME ext:json "secret"
+COMPANY_NAME ext:json "key"
+COMPANY_NAME ext:json "token"
+COMPANY_NAME ext:xml "password"
+COMPANY_NAME ext:xml "secret"
+site:*.hubspotusercontent*.net inurl:/hubfs COMPANY_NAME
+site:*.hs-sites.com COMPANY_NAME
+site:*.my.salesforce.com inurl:"/servlet/servlet.FileDownload" COMPANY_NAME
+site:*.content.force.com inurl:"/sfc/servlet.shepherd/document" COMPANY_NAME
+site:*.visualforce.com COMPANY_NAME
+site:*.lightning.force.com COMPANY_NAME
+COMPANY_NAME site:*.hubspotusercontent*.net filetype:pdf
+COMPANY_NAME site:*.salesforce.com filetype:xlsx
+COMPANY_NAME site:*.force.com "confidential"
+COMPANY_NAME site:*.hubspot*.net "internal use only" 

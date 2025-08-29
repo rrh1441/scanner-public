@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SimplCyber Security Snapshot – {{domain}}</title>
+
+  <!-- Typography: Inter with tabular numerals for finance alignment -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --ink-2: #334155;
+      --ink-3: #64748b;
+      --accent: #0f766e;
+      --accent-2: #115e59;
+      --accent-soft: #e6fffb;
+      --border: #e5e7eb;
+      --critical: #b91c1c;
+      --high: #c2410c;
+      --medium: #a16207;
+      --low: #15803d;
+      --info: #0369a1;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --shadow-1: 0 2px 10px rgba(15, 23, 42, 0.05);
+      --fs-0: 0.875rem;
+      --fs-1: 1rem;
+      --fs-2: 1.125rem;
+      --fs-3: 1.375rem;
+      --fs-4: 1.75rem;
+      --fs-5: clamp(1.5rem, 3.2vw, 2.25rem);
+      --fs-6: clamp(1.75rem, 4.0vw, 3rem);
+      --space-1: 6px;
+      --space-2: 10px;
+      --space-3: 14px;
+      --space-4: 20px;
+      --space-5: 28px;
+      --space-6: 36px;
+      --space-7: 48px;
+      --space-8: 64px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-variant-numeric: tabular-nums lining-nums;
+    }
+
+    .report {
+      max-width: 800px;
+      margin: var(--space-5) auto;
+      padding: 0 var(--space-4);
+    }
+
+    .header {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-6) var(--space-6);
+      text-align: center;
+      margin-bottom: var(--space-6);
+    }
+
+    .brand {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+
+    .brand-mark {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: radial-gradient(120% 120% at 20% 20%, #14b8a6 0%, #0f766e 60%, #115e59 100%);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+    }
+
+    .title h1 {
+      margin: 0 0 var(--space-2) 0;
+      font-size: var(--fs-5);
+      letter-spacing: -0.015em;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .subtitle {
+      color: var(--ink-3);
+      font-size: var(--fs-2);
+      margin: 0;
+    }
+
+    .domain-highlight {
+      color: var(--accent-2);
+      font-weight: 600;
+    }
+
+    .risk-summary {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .risk-title {
+      font-size: var(--fs-3);
+      margin: 0 0 var(--space-5) 0;
+      text-align: center;
+      color: var(--ink);
+    }
+
+    .risk-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+
+    .risk-card {
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      text-align: center;
+      position: relative;
+    }
+
+    .risk-card.primary {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .risk-label {
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--ink-3);
+      margin-bottom: var(--space-2);
+    }
+
+    .risk-amount {
+      font-weight: 800;
+      font-size: var(--fs-6);
+      color: var(--accent-2);
+      line-height: 1.1;
+      margin-bottom: var(--space-2);
+    }
+
+    .risk-card.primary .risk-amount {
+      color: var(--critical);
+    }
+
+    .risk-description {
+      color: var(--ink-2);
+      font-size: var(--fs-0);
+      line-height: 1.4;
+    }
+
+    .findings-overview {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .findings-title {
+      font-size: var(--fs-3);
+      margin: 0 0 var(--space-4) 0;
+      text-align: center;
+      color: var(--ink);
+    }
+
+    .severity-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-3);
+    }
+
+    .severity-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      text-align: center;
+      box-shadow: var(--shadow-1);
+    }
+
+    .severity-count {
+      font-size: var(--fs-4);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .severity-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-3);
+      font-weight: 600;
+    }
+
+    .severity-card.critical .severity-count { color: var(--critical); }
+    .severity-card.high .severity-count { color: var(--high); }
+    .severity-card.medium .severity-count { color: var(--medium); }
+    .severity-card.low .severity-count { color: var(--low); }
+
+    .key-risks {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .key-risks h3 {
+      font-size: var(--fs-3);
+      margin: 0 0 var(--space-4) 0;
+      text-align: center;
+      color: var(--ink);
+    }
+
+    .risk-categories {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .risk-category {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-3) var(--space-4);
+      background: #f8fffe;
+      border: 1px solid #b2f5ea;
+      border-radius: var(--radius-md);
+    }
+
+    .category-name {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .category-impact {
+      font-size: var(--fs-0);
+      color: var(--ink-3);
+    }
+
+    .cta-section {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: var(--space-7);
+      text-align: center;
+      margin-bottom: var(--space-6);
+    }
+
+    .cta-title {
+      font-size: var(--fs-4);
+      font-weight: 700;
+      margin: 0 0 var(--space-3) 0;
+    }
+
+    .cta-description {
+      font-size: var(--fs-1);
+      margin: 0 0 var(--space-5) 0;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: white;
+      color: var(--accent-2);
+      padding: var(--space-4) var(--space-6);
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: var(--fs-1);
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .footer {
+      color: var(--ink-3);
+      font-size: var(--fs-0);
+      text-align: center;
+      padding: var(--space-6) var(--space-4);
+    }
+
+    @media (max-width: 768px) {
+      .risk-cards { grid-template-columns: 1fr; }
+      .severity-grid { grid-template-columns: repeat(2, 1fr); }
+      .report { padding: 0 var(--space-3); margin: var(--space-4) auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="report">
+
+    <section class="header">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="title">
+          <h1>Security Risk Snapshot</h1>
+          <p class="subtitle">Your website <span class="domain-highlight">{{domain}}</span> has security risks that could cost your business</p>
+        </div>
+      </div>
+    </section>
+
+    {{#if eal_summary}}
+    <section class="risk-summary">
+      <h2 class="risk-title">Financial Impact Assessment</h2>
+      
+      <div class="risk-cards">
+        <div class="risk-card primary">
+          <div class="risk-label">Annual Security Risk</div>
+          <div class="risk-amount">${{format_abbrev eal_summary.total_eal_ml}}</div>
+          <div class="risk-description">Potential annual loss from cyber attacks, data breaches, and security incidents</div>
+        </div>
+        
+        {{#if eal_summary.compliance_risk}}
+        <div class="risk-card">
+          <div class="risk-label">Compliance Exposure</div>
+          <div class="risk-amount">${{format_abbrev eal_summary.compliance_risk}}</div>
+          <div class="risk-description">Regulatory fines and legal costs from compliance violations</div>
+        </div>
+        {{else}}
+        <div class="risk-card">
+          <div class="risk-label">Daily Cloud Risk</div>
+          <div class="risk-amount">${{format_abbrev eal_summary.daily_cloud_risk}}/day</div>
+          <div class="risk-description">Daily exposure to resource abuse and account takeover attacks</div>
+        </div>
+        {{/if}}
+      </div>
+    </section>
+    {{/if}}
+
+    <section class="findings-overview">
+      <h3 class="findings-title">Security Vulnerabilities Found</h3>
+      
+      <div class="severity-grid">
+        <div class="severity-card critical">
+          <div class="severity-count">{{severity_counts.CRITICAL}}</div>
+          <div class="severity-label">Critical</div>
+        </div>
+        <div class="severity-card high">
+          <div class="severity-count">{{severity_counts.HIGH}}</div>
+          <div class="severity-label">High Risk</div>
+        </div>
+        <div class="severity-card medium">
+          <div class="severity-count">{{severity_counts.MEDIUM}}</div>
+          <div class="severity-label">Medium</div>
+        </div>
+        <div class="severity-card low">
+          <div class="severity-count">{{severity_counts.LOW}}</div>
+          <div class="severity-label">Low Risk</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="key-risks">
+      <h3>What These Risks Mean for Your Business</h3>
+      
+      <div class="risk-categories">
+        {{#each findings}}
+        {{#if ai_remediation.description}}
+        <div class="risk-category">
+          <div class="category-name">{{#if (eq severity "CRITICAL")}}🚨{{else if (eq severity "HIGH")}}⚠️{{else}}🔍{{/if}} {{title}}</div>
+          <div class="category-impact">{{ai_remediation.description}}</div>
+        </div>
+        {{/if}}
+        {{/each}}
+        
+        {{#unless findings.length}}
+        <div class="risk-category">
+          <div class="category-name">💰 Financial Impact</div>
+          <div class="category-impact">Average data breach costs $4.45M in 2023</div>
+        </div>
+        {{/unless}}
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <h2 class="cta-title">Don't Let These Risks Become Reality</h2>
+      <p class="cta-description">
+        Our security experts can help you fix these vulnerabilities before they cost your business. 
+        Get a detailed action plan and protect your company today.
+      </p>
+      <a href="#" class="cta-button">Schedule Your Security Consultation</a>
+    </section>
+
+    <footer class="footer">
+      <p><strong>SimplCyber Security Assessment</strong> • Generated {{report_date}} • Confidential Report</p>
+      <p>This assessment identified {{total_findings}} security issues across your digital infrastructure</p>
+    </footer>
+  </main>
+</body>
+</html>

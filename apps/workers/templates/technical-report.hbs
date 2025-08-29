@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SimplCyber Technical Security Report – {{domain}}</title>
+
+  <!-- Typography: JetBrains Mono for code, Inter for text -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --ink-2: #334155;
+      --ink-3: #64748b;
+      --accent: #0f766e;
+      --accent-2: #115e59;
+      --accent-soft: #e6fffb;
+      --border: #e5e7eb;
+      --critical: #b91c1c;
+      --high: #c2410c;
+      --medium: #a16207;
+      --low: #15803d;
+      --info: #0369a1;
+      --code-bg: #f8fafc;
+      --code-border: #e2e8f0;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --shadow-1: 0 2px 10px rgba(15, 23, 42, 0.05);
+      --fs-0: 0.875rem;
+      --fs-1: 1rem;
+      --fs-2: 1.125rem;
+      --fs-3: 1.375rem;
+      --fs-4: 1.75rem;
+      --fs-5: clamp(1.5rem, 3.2vw, 2.25rem);
+      --fs-6: clamp(1.75rem, 4.0vw, 3rem);
+      --space-1: 6px;
+      --space-2: 10px;
+      --space-3: 14px;
+      --space-4: 20px;
+      --space-5: 28px;
+      --space-6: 36px;
+      --space-7: 48px;
+      --space-8: 64px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .report {
+      max-width: 1200px;
+      margin: var(--space-7) auto;
+      padding: 0 var(--space-4);
+    }
+
+    .header {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-6) var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+    .header-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-3);
+      justify-content: space-between;
+      margin-bottom: var(--space-3);
+    }
+    .brand {
+      display: flex;
+      gap: var(--space-3);
+      align-items: center;
+    }
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: radial-gradient(120% 120% at 20% 20%, #14b8a6 0%, #0f766e 60%, #115e59 100%);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+    }
+    .title {
+      display: grid;
+      gap: 2px;
+    }
+    .title h1 {
+      margin: 0;
+      font-size: var(--fs-5);
+      letter-spacing: -0.015em;
+      font-weight: 700;
+    }
+    .subtitle {
+      color: var(--ink-3);
+      font-size: var(--fs-0);
+    }
+    .report-meta {
+      text-align: right;
+      color: var(--ink-3);
+      font-size: var(--fs-0);
+    }
+    .meta-pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--code-bg);
+      color: var(--ink-2);
+      font-weight: 600;
+      border: 1px solid var(--code-border);
+      margin-left: var(--space-2);
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .scan-overview {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .scan-overview h2 {
+      font-size: var(--fs-3);
+      margin: 0 0 var(--space-4) 0;
+      color: var(--ink);
+    }
+
+    .scan-stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+
+    .stat-card {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-3);
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: var(--fs-3);
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: var(--space-1);
+    }
+
+    .stat-label {
+      font-size: var(--fs-0);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-3);
+      font-weight: 600;
+    }
+
+    .stat-card.critical .stat-value { color: var(--critical); }
+    .stat-card.high .stat-value { color: var(--high); }
+    .stat-card.medium .stat-value { color: var(--medium); }
+    .stat-card.low .stat-value { color: var(--low); }
+
+    .module-summary {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: var(--fs-0);
+    }
+
+    .findings-section {
+      margin-bottom: var(--space-6);
+    }
+
+    .findings-section h2 {
+      font-size: var(--fs-4);
+      margin: 0 0 var(--space-4) 0;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .section-count {
+      background: var(--accent-soft);
+      color: var(--accent-2);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: var(--fs-0);
+      font-weight: 600;
+    }
+
+    .finding {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      margin-bottom: var(--space-5);
+      overflow: hidden;
+    }
+
+    .finding-header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: var(--space-3);
+      align-items: center;
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--border);
+      background: var(--code-bg);
+    }
+
+    .severity-badge {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .severity-badge.critical { background: #fef2f2; color: var(--critical); border: 1px solid #fecaca; }
+    .severity-badge.high { background: #fff7ed; color: var(--high); border: 1px solid #fed7aa; }
+    .severity-badge.medium { background: #fffbeb; color: var(--medium); border: 1px solid #fde68a; }
+    .severity-badge.low { background: #f0fdf4; color: var(--low); border: 1px solid #bbf7d0; }
+    .severity-badge.info { background: #f0f9ff; color: var(--info); border: 1px solid #bae6fd; }
+
+    .finding-title {
+      font-weight: 700;
+      font-size: var(--fs-2);
+      color: var(--ink);
+    }
+
+    .finding-type {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: var(--fs-0);
+      color: var(--ink-3);
+      background: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .finding-body {
+      padding: var(--space-5);
+    }
+
+    .finding-description {
+      color: var(--ink-2);
+      margin-bottom: var(--space-4);
+      line-height: 1.6;
+    }
+
+    .technical-details {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      margin: var(--space-4) 0;
+    }
+
+    .technical-details h4 {
+      margin: 0 0 var(--space-3) 0;
+      font-size: var(--fs-1);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .tech-icon {
+      font-size: 1.2em;
+    }
+
+    .code-block {
+      background: #1a202c;
+      color: #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: var(--fs-0);
+      overflow-x: auto;
+      margin: var(--space-3) 0;
+      border: 1px solid #2d3748;
+    }
+
+    .code-block .comment { color: #68d391; }
+    .code-block .keyword { color: #90cdf4; }
+    .code-block .string { color: #f6e05e; }
+
+    .url-list {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-3);
+      margin: var(--space-3) 0;
+    }
+
+    .url-list ul {
+      margin: 0;
+      padding-left: var(--space-4);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: var(--fs-0);
+    }
+
+    .url-list li {
+      margin-bottom: var(--space-1);
+      color: var(--ink-2);
+    }
+
+    .remediation {
+      background: linear-gradient(135deg, var(--accent-soft) 0%, #f0fdf9 100%);
+      border: 1px solid #a7f3d0;
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      margin-top: var(--space-4);
+    }
+
+    .remediation h4 {
+      margin: 0 0 var(--space-3) 0;
+      font-size: var(--fs-2);
+      color: var(--accent-2);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .remediation-steps {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .remediation-steps li {
+      position: relative;
+      padding-left: var(--space-5);
+      margin-bottom: var(--space-3);
+      color: var(--ink-2);
+    }
+
+    .remediation-steps li::before {
+      content: counter(step-counter);
+      counter-increment: step-counter;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: var(--accent);
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .remediation-steps {
+      counter-reset: step-counter;
+    }
+
+    .priority-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-size: var(--fs-0);
+      font-weight: 600;
+      margin-bottom: var(--space-3);
+    }
+
+    .priority-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .priority-immediate .priority-dot { background: var(--critical); }
+    .priority-critical .priority-dot { background: var(--critical); }
+    .priority-high .priority-dot { background: var(--high); }
+    .priority-medium .priority-dot { background: var(--medium); }
+    .priority-low .priority-dot { background: var(--low); }
+
+    .remediation-description {
+      background: var(--accent-soft);
+      border: 1px solid #a7f3d0;
+      border-radius: var(--radius-md);
+      padding: var(--space-3);
+      margin: var(--space-3) 0;
+      color: var(--ink-2);
+      line-height: 1.5;
+    }
+
+    .risk-assessment {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      margin: var(--space-4) 0;
+    }
+
+    .risk-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+
+    .risk-metric {
+      text-align: center;
+      padding: var(--space-2);
+      background: var(--code-bg);
+      border-radius: var(--radius-md);
+    }
+
+    .risk-value {
+      font-size: var(--fs-2);
+      font-weight: 700;
+      color: var(--accent-2);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .risk-label {
+      font-size: var(--fs-0);
+      color: var(--ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    .cvss-score {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: var(--fs-0);
+      font-weight: 600;
+      margin-left: var(--space-2);
+    }
+
+    .cvss-critical { background: #fef2f2; color: var(--critical); }
+    .cvss-high { background: #fff7ed; color: var(--high); }
+    .cvss-medium { background: #fffbeb; color: var(--medium); }
+    .cvss-low { background: #f0fdf4; color: var(--low); }
+
+    .tools-used {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .tools-used h3 {
+      font-size: var(--fs-3);
+      margin: 0 0 var(--space-4) 0;
+      color: var(--ink);
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-3);
+    }
+
+    .tool-card {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-3);
+    }
+
+    .tool-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: var(--space-1);
+    }
+
+    .tool-description {
+      font-size: var(--fs-0);
+      color: var(--ink-3);
+    }
+
+    .footer {
+      color: var(--ink-3);
+      font-size: var(--fs-0);
+      text-align: center;
+      padding: var(--space-6) var(--space-4) var(--space-7);
+      border-top: 1px solid var(--border);
+      margin-top: var(--space-7);
+    }
+
+    @media print {
+      body { background: #fff; font-size: 12px; }
+      .report { margin: 0; padding: 0; }
+      .header, .scan-overview, .finding, .tools-used { box-shadow: none; }
+      .finding { page-break-inside: avoid; break-inside: avoid; }
+      .code-block { background: #f8f9fa !important; color: #333 !important; border: 1px solid #ddd; }
+    }
+
+    @media (max-width: 980px) {
+      .scan-stats { grid-template-columns: repeat(3, 1fr); }
+      .risk-metrics { grid-template-columns: repeat(2, 1fr); }
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .scan-stats { grid-template-columns: repeat(2, 1fr); }
+      .risk-metrics { grid-template-columns: 1fr; }
+      .finding-header { grid-template-columns: 1fr; gap: var(--space-2); }
+    }
+  </style>
+</head>
+<body>
+  <main class="report">
+
+    <section class="header">
+      <div class="header-top">
+        <div class="brand">
+          <div class="brand-mark"></div>
+          <div class="title">
+            <h1>Technical Security Report</h1>
+            <div class="subtitle">{{domain}}</div>
+          </div>
+        </div>
+        <div class="report-meta">
+          <span>Generated: {{report_date}}</span>
+          <span class="meta-pill">v2.0 • {{modules_completed}} modules</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="scan-overview">
+      <h2>Scan Overview</h2>
+      
+      <div class="scan-stats">
+        <div class="stat-card critical">
+          <div class="stat-value">{{severity_counts.CRITICAL}}</div>
+          <div class="stat-label">Critical</div>
+        </div>
+        <div class="stat-card high">
+          <div class="stat-value">{{severity_counts.HIGH}}</div>
+          <div class="stat-label">High</div>
+        </div>
+        <div class="stat-card medium">
+          <div class="stat-value">{{severity_counts.MEDIUM}}</div>
+          <div class="stat-label">Medium</div>
+        </div>
+        <div class="stat-card low">
+          <div class="stat-value">{{severity_counts.LOW}}</div>
+          <div class="stat-label">Low</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{total_findings}}</div>
+          <div class="stat-label">Total</div>
+        </div>
+      </div>
+
+      <div class="module-summary">
+Scan ID: {{scan_id}}
+Target:  {{domain}}
+Date:    {{scan_date}}
+Runtime: {{duration_seconds}}s
+Modules: {{modules_completed}} active security modules
+Status:  Complete
+      </div>
+    </section>
+
+    <section class="tools-used">
+      <h3>Security Tools & Methodology</h3>
+      
+      <div class="tool-grid">
+        <div class="tool-card">
+          <div class="tool-name">httpx</div>
+          <div class="tool-description">HTTP toolkit for probing and discovery</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">sslscan</div>
+          <div class="tool-description">SSL/TLS configuration analysis</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">nuclei</div>
+          <div class="tool-description">Vulnerability scanner with template engine</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">nmap</div>
+          <div class="tool-description">Network discovery and port scanning</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">whatweb</div>
+          <div class="tool-description">Web application fingerprinting</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Custom Modules</div>
+          <div class="tool-description">SimplCyber proprietary security checks</div>
+        </div>
+      </div>
+    </section>
+
+    {{#if findings.length}}
+    <section class="findings-section">
+      <h2>Security Findings <span class="section-count">{{total_findings}} issues</span></h2>
+
+      {{#each findings}}
+      <article class="finding">
+        <header class="finding-header">
+          <span class="severity-badge {{toLowerCase severity}}">{{severity}}</span>
+          <div class="finding-title">{{title}}</div>
+          <div class="finding-type">{{type}}</div>
+        </header>
+        
+        <div class="finding-body">
+          <div class="finding-description">
+            {{#if description}}{{description}}{{else}}Security vulnerability identified requiring technical remediation.{{/if}}
+          </div>
+
+          <div class="technical-details">
+            <h4><span class="tech-icon">🔍</span> Technical Analysis</h4>
+            
+            {{#if metadata.url}}
+            <div class="url-list">
+              <strong>Affected URL:</strong>
+              <ul>
+                <li>{{metadata.url}}</li>
+              </ul>
+            </div>
+            {{/if}}
+
+            {{#if metadata.endpoints}}
+            <div class="url-list">
+              <strong>Affected Endpoints:</strong>
+              <ul>
+                {{#each metadata.endpoints}}
+                <li>{{this}}</li>
+                {{/each}}
+              </ul>
+            </div>
+            {{/if}}
+
+            {{#if metadata.technologies}}
+            <div class="url-list">
+              <strong>Affected Technologies:</strong>
+              <ul>
+                {{#each metadata.technologies}}
+                <li>{{this}}</li>
+                {{/each}}
+              </ul>
+            </div>
+            {{/if}}
+
+            {{#if metadata.response}}
+            <div>
+              <strong>Server Response:</strong>
+              <div class="code-block">{{metadata.response}}</div>
+            </div>
+            {{/if}}
+
+            {{#if metadata.headers}}
+            <div>
+              <strong>Security Headers:</strong>
+              <div class="code-block">{{#each metadata.headers}}{{@key}}: {{this}}
+{{/each}}</div>
+            </div>
+            {{/if}}
+          </div>
+
+          {{#if metadata.cvss_score}}
+          <div class="risk-assessment">
+            <h4><span class="tech-icon">📊</span> Risk Assessment</h4>
+            <div class="risk-metrics">
+              <div class="risk-metric">
+                <div class="risk-value">{{metadata.cvss_score}}</div>
+                <div class="risk-label">CVSS Score</div>
+              </div>
+              <div class="risk-metric">
+                <div class="risk-value">{{metadata.exploitability}}%</div>
+                <div class="risk-label">Exploitability</div>
+              </div>
+              <div class="risk-metric">
+                <div class="risk-value">{{metadata.impact_score}}</div>
+                <div class="risk-label">Impact</div>
+              </div>
+            </div>
+          </div>
+          {{/if}}
+
+          <div class="remediation">
+            <h4>🛠️ AI-Generated Remediation Plan</h4>
+            
+            {{#if ai_remediation}}
+            <div class="priority-indicator priority-{{toLowerCase ai_remediation.priority}}">
+              <span class="priority-dot"></span>
+              {{ai_remediation.priority}} PRIORITY - {{ai_remediation.timeline}}
+            </div>
+
+            {{#if ai_remediation.description}}
+            <div class="remediation-description">
+              {{ai_remediation.description}}
+            </div>
+            {{/if}}
+
+            {{#if ai_remediation.steps}}
+            <ol class="remediation-steps">
+              {{#each ai_remediation.steps}}
+              <li>{{this}}</li>
+              {{/each}}
+            </ol>
+            {{/if}}
+
+            {{#if ai_remediation.raw_response}}
+            <details>
+              <summary style="cursor: pointer; color: var(--accent-2); font-weight: 600; margin: var(--space-3) 0;">
+                📝 View Full AI Analysis
+              </summary>
+              <div style="white-space: pre-wrap; background: var(--code-bg); padding: var(--space-3); border-radius: var(--radius-md); margin-top: var(--space-2); font-size: var(--fs-0); line-height: 1.5;">{{ai_remediation.raw_response}}</div>
+            </details>
+            {{/if}}
+
+            {{else}}
+            <!-- Fallback to generic remediation if AI fails -->
+            <div class="priority-indicator priority-{{toLowerCase severity}}">
+              <span class="priority-dot"></span>
+              {{severity}} PRIORITY - Review and remediate as appropriate
+            </div>
+
+            <ol class="remediation-steps">
+              <li>Analyze the specific vulnerability in your environment</li>
+              <li>Implement appropriate security controls based on risk level</li>
+              <li>Test fixes in staging environment before production</li>
+              <li>Monitor for similar issues across your infrastructure</li>
+              <li>Document remediation steps for future reference</li>
+            </ol>
+            {{/if}}
+          </div>
+        </div>
+      </article>
+      {{/each}}
+    </section>
+    {{else}}
+    <section class="findings-section">
+      <h2>Security Findings</h2>
+      <div class="finding">
+        <div class="finding-body">
+          <div class="finding-description">
+            ✅ No security vulnerabilities detected in this scan. Your security posture appears to be well-configured for the tested attack vectors.
+          </div>
+        </div>
+      </div>
+    </section>
+    {{/if}}
+
+    <footer class="footer">
+      <p><strong>SimplCyber Technical Security Report</strong> • Generated {{report_date}} • v2.0</p>
+      <p>Scan completed in {{duration_seconds}} seconds • {{modules_completed}} security modules executed</p>
+      <p><strong>⚠️ CONFIDENTIAL:</strong> This technical report contains sensitive security information and should be accessible only to authorized technical personnel</p>
+    </footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,82 @@
+# Optimized Google Dorks - Reduced from 94 to 22 queries
+# Each line represents a consolidated query that maintains full coverage
+
+# Domain file discovery (1 query instead of 17)
+site:DOMAIN (filetype:pdf OR filetype:doc OR filetype:docx OR filetype:xls OR filetype:xlsx OR filetype:ppt OR filetype:pptx OR filetype:txt OR filetype:csv OR filetype:sql OR filetype:log OR filetype:zip OR filetype:tar OR filetype:gz OR filetype:backup OR filetype:bak OR filetype:old)
+
+# Company document search (1 query instead of 5)
+COMPANY_NAME (filetype:pdf OR filetype:doc OR filetype:docx OR filetype:xls OR filetype:xlsx)
+
+# Sensitive PDF documents (1 query instead of 11)
+COMPANY_NAME ("confidential" OR "internal" OR "private" OR "financial" OR "budget" OR "salary" OR "contract" OR "agreement" OR "employee" OR "org chart" OR "organization chart") filetype:pdf
+
+# Database files (1 query instead of 3)
+COMPANY_NAME ("database" OR "backup" OR "dump") filetype:sql
+
+# Configuration and secrets in text files (1 query instead of 8)
+COMPANY_NAME ("config" OR "configuration" OR "password" OR "passwords" OR "credentials" OR "api key" OR "secret" OR "token") filetype:txt
+
+# Code repositories (1 query instead of 7)
+COMPANY_NAME (site:github.com OR site:gitlab.com OR site:bitbucket.org OR site:pastebin.com OR site:paste.ee OR site:justpaste.it OR site:rentry.co)
+
+# Exposed configuration files in URLs (1 query instead of 6)
+COMPANY_NAME (inurl:"wp-config.php.txt" OR inurl:".env" OR inurl:"config.php" OR inurl:"settings.php" OR inurl:"database.yml" OR inurl:"credentials.json" OR inurl:"secrets.yml")
+
+# Directory listings (1 query instead of 2)
+COMPANY_NAME (intitle:"index of" OR intitle:"directory listing")
+
+# Database connection strings (1 query instead of 10)
+COMPANY_NAME (intext:"mysql_connect" OR intext:"mysql_pconnect" OR intext:"pg_connect" OR intext:"mssql_connect" OR intext:"oracle_connect" OR intext:"mongodb://" OR intext:"postgres://" OR intext:"redis://" OR intext:"ftp://" OR intext:"sftp://")
+
+# Configuration files by extension (1 query instead of 8)
+COMPANY_NAME (ext:env OR ext:ini OR ext:cfg OR ext:conf OR ext:config OR ext:properties OR ext:yaml OR ext:yml)
+
+# JSON files with secrets (1 query instead of 4)
+COMPANY_NAME ext:json ("password" OR "secret" OR "key" OR "token")
+
+# XML files with secrets (1 query instead of 2)
+COMPANY_NAME ext:xml ("password" OR "secret")
+
+# HubSpot CDN general search (1 query instead of 2)
+COMPANY_NAME (site:*.hubspotusercontent*.net OR site:*.hs-sites.com)
+
+# HubSpot specific file search
+site:*.hubspotusercontent*.net inurl:/hubfs COMPANY_NAME
+
+# Salesforce CDN general search (1 query instead of 4)
+COMPANY_NAME (site:*.my.salesforce.com OR site:*.content.force.com OR site:*.visualforce.com OR site:*.lightning.force.com)
+
+# Salesforce file downloads
+site:*.my.salesforce.com inurl:"/servlet/servlet.FileDownload" COMPANY_NAME
+
+# Salesforce document shepherd
+site:*.content.force.com inurl:"/sfc/servlet.shepherd/document" COMPANY_NAME
+
+# HubSpot sensitive PDFs
+COMPANY_NAME site:*.hubspotusercontent*.net filetype:pdf
+
+# Salesforce sensitive spreadsheets
+COMPANY_NAME site:*.salesforce.com filetype:xlsx
+
+# Force.com confidential content
+COMPANY_NAME site:*.force.com "confidential"
+
+# HubSpot internal documents
+COMPANY_NAME site:*.hubspot*.net "internal use only"
+
+# --- NEW PLATFORMS ---
+
+# Google Drive / Docs
+(site:drive.google.com/file/d/ OR site:docs.google.com/document/d/ OR site:drive.google.com/drive/folders/) COMPANY_NAME ("confidential" OR "internal" OR "proprietary")
+
+# Microsoft SharePoint/OneDrive
+(site:*.sharepoint.com OR site:onedrive.live.com/redir?resid=) COMPANY_NAME (filetype:xlsx OR filetype:docx) ("financial report" OR "confidential" OR "proprietary")
+
+# Box
+site:app.box.com/s/ COMPANY_NAME ("internal documents" OR "sensitive data")
+
+# Dropbox
+site:dropbox.com/s/ COMPANY_NAME ("sensitive data" OR "internal plans")
+
+# --- API DOCUMENTATION ---
+COMPANY_NAME (filetype:yaml OR filetype:json) (intext:"swagger" OR intext:"openapi" OR intext:"API documentation")

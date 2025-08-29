@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SimplCyber Executive Security Report – {{domain}}</title>
+
+  <!-- Typography: Inter with tabular numerals for finance alignment -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --ink-2: #334155;
+      --ink-3: #64748b;
+      --accent: #0f766e;
+      --accent-2: #115e59;
+      --accent-soft: #e6fffb;
+      --border: #e5e7eb;
+      --critical: #b91c1c;
+      --high: #c2410c;
+      --medium: #a16207;
+      --low: #15803d;
+      --info: #0369a1;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --shadow-1: 0 2px 10px rgba(15, 23, 42, 0.05);
+      --fs-0: 0.875rem;
+      --fs-1: 1rem;
+      --fs-2: 1.125rem;
+      --fs-3: 1.375rem;
+      --fs-4: 1.75rem;
+      --fs-5: clamp(1.5rem, 3.2vw, 2.25rem);
+      --fs-6: clamp(1.75rem, 4.0vw, 3rem);
+      --space-1: 6px;
+      --space-2: 10px;
+      --space-3: 14px;
+      --space-4: 20px;
+      --space-5: 28px;
+      --space-6: 36px;
+      --space-7: 48px;
+      --space-8: 64px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-variant-numeric: tabular-nums lining-nums;
+    }
+
+    .report {
+      max-width: 1100px;
+      margin: var(--space-7) auto;
+      padding: 0 var(--space-4);
+    }
+
+    .header {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-6) var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+    .header-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-3);
+      justify-content: space-between;
+      margin-bottom: var(--space-3);
+    }
+    .brand {
+      display: flex;
+      gap: var(--space-3);
+      align-items: center;
+    }
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: radial-gradient(120% 120% at 20% 20%, #14b8a6 0%, #0f766e 60%, #115e59 100%);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+    }
+    .title {
+      display: grid;
+      gap: 2px;
+    }
+    .title h1 {
+      margin: 0;
+      font-size: var(--fs-5);
+      letter-spacing: -0.015em;
+      font-weight: 700;
+    }
+    .subtitle {
+      color: var(--ink-3);
+      font-size: var(--fs-0);
+    }
+    .report-meta {
+      text-align: right;
+      color: var(--ink-3);
+      font-size: var(--fs-0);
+    }
+    .meta-pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-2);
+      font-weight: 600;
+      border: 1px solid #b2f5ea;
+      margin-left: var(--space-2);
+      font-size: 0.8rem;
+    }
+
+    .executive-summary {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .executive-summary h2 {
+      font-size: var(--fs-4);
+      margin: 0 0 var(--space-4) 0;
+      color: var(--ink);
+    }
+
+    .summary-text {
+      font-size: var(--fs-2);
+      line-height: 1.7;
+      color: var(--ink-2);
+      margin-bottom: var(--space-5);
+    }
+
+    .key-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+    }
+
+    .metric-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      text-align: center;
+      box-shadow: var(--shadow-1);
+    }
+
+    .metric-value {
+      font-size: var(--fs-4);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: var(--space-1);
+    }
+
+    .metric-label {
+      font-size: var(--fs-0);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-3);
+      font-weight: 600;
+    }
+
+    .metric-card.critical .metric-value { color: var(--critical); }
+    .metric-card.financial .metric-value { color: var(--accent-2); }
+
+    .risk-analysis {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .risk-analysis h3 {
+      font-size: var(--fs-3);
+      margin: 0 0 var(--space-4) 0;
+      color: var(--ink);
+    }
+
+    .financial-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+      margin-bottom: var(--space-5);
+    }
+
+    .financial-card {
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+    }
+
+    .financial-card.primary {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .financial-label {
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--ink-3);
+      margin-bottom: var(--space-2);
+    }
+
+    .financial-amount {
+      font-weight: 800;
+      font-size: var(--fs-6);
+      color: var(--accent-2);
+      line-height: 1.1;
+      margin-bottom: var(--space-2);
+    }
+
+    .financial-description {
+      color: var(--ink-2);
+      font-size: var(--fs-0);
+      line-height: 1.5;
+    }
+
+    .business-impact {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .business-impact h3 {
+      font-size: var(--fs-3);
+      margin: 0 0 var(--space-4) 0;
+      color: var(--ink);
+    }
+
+    .impact-categories {
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    .impact-category {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-1);
+    }
+
+    .impact-category h4 {
+      margin: 0 0 var(--space-2) 0;
+      font-size: var(--fs-2);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .impact-icon {
+      font-size: 1.2em;
+    }
+
+    .impact-description {
+      color: var(--ink-2);
+      margin-bottom: var(--space-3);
+    }
+
+    .impact-risks {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .risk-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2);
+      background: var(--bg);
+      border-radius: 6px;
+    }
+
+    .risk-severity {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .risk-severity.critical { background: #fef2f2; color: var(--critical); }
+    .risk-severity.high { background: #fff7ed; color: var(--high); }
+    .risk-severity.medium { background: #fffbeb; color: var(--medium); }
+    .risk-severity.low { background: #f0fdf4; color: var(--low); }
+
+    .recommendations {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .recommendations h3 {
+      font-size: var(--fs-3);
+      margin: 0 0 var(--space-4) 0;
+      color: var(--ink);
+    }
+
+    .recommendation-grid {
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    .recommendation {
+      background: #fff;
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-1);
+    }
+
+    .recommendation h4 {
+      margin: 0 0 var(--space-2) 0;
+      font-size: var(--fs-1);
+      color: var(--ink);
+    }
+
+    .recommendation-priority {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-2);
+    }
+
+    .priority-immediate { background: #fef2f2; color: var(--critical); }
+    .priority-high { background: #fff7ed; color: var(--high); }
+    .priority-medium { background: #fffbeb; color: var(--medium); }
+
+    .recommendation p {
+      margin: 0;
+      color: var(--ink-2);
+      line-height: 1.5;
+    }
+
+    .finding-categories {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-1);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .finding-categories h3 {
+      font-size: var(--fs-3);
+      margin: 0 0 var(--space-4) 0;
+      color: var(--ink);
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .category-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-1);
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-3);
+    }
+
+    .category-title {
+      font-size: var(--fs-1);
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .category-count {
+      background: var(--accent-soft);
+      color: var(--accent-2);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .category-description {
+      color: var(--ink-2);
+      font-size: var(--fs-0);
+      line-height: 1.5;
+    }
+
+    .footer {
+      color: var(--ink-3);
+      font-size: var(--fs-0);
+      text-align: center;
+      padding: var(--space-6) var(--space-4) var(--space-7);
+      border-top: 1px solid var(--border);
+      margin-top: var(--space-7);
+    }
+
+    @media print {
+      body { background: #fff; }
+      .report { margin: 0; padding: 0; }
+      .header, .executive-summary, .risk-analysis, .business-impact, .recommendations, .finding-categories { box-shadow: none; }
+      .executive-summary, .risk-analysis, .business-impact, .recommendations { page-break-inside: avoid; }
+    }
+
+    @media (max-width: 980px) {
+      .financial-grid { grid-template-columns: 1fr; }
+      .key-metrics { grid-template-columns: repeat(2, 1fr); }
+      .category-grid { grid-template-columns: 1fr; }
+      .report-meta { text-align: left; }
+    }
+
+    @media (max-width: 560px) {
+      .key-metrics { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="report">
+
+    <section class="header">
+      <div class="header-top">
+        <div class="brand">
+          <div class="brand-mark"></div>
+          <div class="title">
+            <h1>Executive Security Report</h1>
+            <div class="subtitle">{{domain}}</div>
+          </div>
+        </div>
+        <div class="report-meta">
+          <span>Generated: {{report_date}}</span>
+          <span class="meta-pill">Executive Overview</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="executive-summary">
+      <h2>Executive Summary</h2>
+      <div class="summary-text">
+        Our comprehensive security assessment of <strong>{{domain}}</strong> identified <strong>{{total_findings}} security vulnerabilities</strong> that pose significant risk to your business operations, customer data, and financial stability. 
+        {{#if has_critical_findings}}
+        <strong style="color: var(--critical);">{{severity_counts.CRITICAL}} critical vulnerabilities</strong> require immediate attention to prevent potential business disruption.
+        {{/if}}
+        {{#if eal_summary}}
+        Based on our analysis, the estimated annual cybersecurity risk exposure is <strong>${{format_currency eal_summary.total_eal_ml}}</strong>, representing potential costs from security incidents, regulatory compliance failures, and operational disruptions.
+        {{/if}}
+      </div>
+      
+      <div class="key-metrics">
+        <div class="metric-card critical">
+          <div class="metric-value">{{total_findings}}</div>
+          <div class="metric-label">Total Issues</div>
+        </div>
+        {{#if eal_summary}}
+        <div class="metric-card financial">
+          <div class="metric-value">${{format_abbrev eal_summary.total_eal_ml}}</div>
+          <div class="metric-label">Annual Risk</div>
+        </div>
+        {{/if}}
+        <div class="metric-card critical">
+          <div class="metric-value">{{severity_counts.CRITICAL}}</div>
+          <div class="metric-label">Critical</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">{{duration_seconds}}s</div>
+          <div class="metric-label">Scan Time</div>
+        </div>
+      </div>
+    </section>
+
+    {{#if eal_summary}}
+    <section class="risk-analysis">
+      <h3>Financial Risk Assessment</h3>
+      
+      <div class="financial-grid">
+        <div class="financial-card primary">
+          <div class="financial-label">Expected Annual Loss (EAL)</div>
+          <div class="financial-amount">${{format_abbrev eal_summary.total_eal_ml}}</div>
+          <div class="financial-description">
+            Estimated annual financial impact based on identified vulnerabilities, industry breach statistics, and business disruption costs. This represents the most likely annual loss scenario.
+          </div>
+        </div>
+        
+        {{#if eal_summary.compliance_risk}}
+        <div class="financial-card">
+          <div class="financial-label">Compliance Risk Exposure</div>
+          <div class="financial-amount">${{format_abbrev eal_summary.compliance_risk}}</div>
+          <div class="financial-description">
+            Potential regulatory fines, legal costs, and compliance remediation expenses from identified violations of privacy laws, accessibility standards, and industry regulations.
+          </div>
+        </div>
+        {{else}}
+        <div class="financial-card">
+          <div class="financial-label">Daily Cloud Risk</div>
+          <div class="financial-amount">${{format_abbrev eal_summary.daily_cloud_risk}}/day</div>
+          <div class="financial-description">
+            Daily exposure to resource abuse, denial-of-wallet attacks, and cloud infrastructure exploitation that could drain business accounts.
+          </div>
+        </div>
+        {{/if}}
+      </div>
+    </section>
+    {{/if}}
+
+    <section class="business-impact">
+      <h3>Business Impact Analysis</h3>
+      
+      <div class="impact-categories">
+        {{#if severity_counts.CRITICAL}}
+        <div class="impact-category">
+          <h4><span class="impact-icon">🚨</span> Critical Security Gaps</h4>
+          <div class="impact-description">
+            These vulnerabilities pose immediate threats to business continuity and could lead to complete system compromise.
+          </div>
+          <div class="impact-risks">
+            <div class="risk-item">
+              <span class="risk-severity critical">Critical</span>
+              <span>{{severity_counts.CRITICAL}} issues requiring immediate remediation</span>
+            </div>
+            <div class="risk-item">
+              <span>💰 Potential for complete data loss and business shutdown</span>
+            </div>
+            <div class="risk-item">
+              <span>⚖️ Legal liability for customer data exposure</span>
+            </div>
+          </div>
+        </div>
+        {{/if}}
+
+        {{#if has_email_security_issues}}
+        <div class="impact-category">
+          <h4><span class="impact-icon">📧</span> Email Security Vulnerabilities</h4>
+          <div class="impact-description">
+            Email authentication issues increase susceptibility to phishing attacks and brand impersonation.
+          </div>
+          <div class="impact-risks">
+            <div class="risk-item">
+              <span>🎣 Increased phishing and spoofing attacks against customers</span>
+            </div>
+            <div class="risk-item">
+              <span>📉 Damaged brand reputation and customer trust</span>
+            </div>
+            <div class="risk-item">
+              <span>💸 Business email compromise (BEC) attack risk</span>
+            </div>
+          </div>
+        </div>
+        {{/if}}
+
+        {{#if has_compliance_issues}}
+        <div class="impact-category">
+          <h4><span class="impact-icon">⚖️</span> Regulatory Compliance Gaps</h4>
+          <div class="impact-description">
+            Identified violations of accessibility standards, privacy laws, and industry regulations.
+          </div>
+          <div class="impact-risks">
+            <div class="risk-item">
+              <span>💰 Regulatory fines up to 4% of annual revenue (GDPR)</span>
+            </div>
+            <div class="risk-item">
+              <span>⚖️ ADA lawsuit risk ($15K-$75K average settlement)</span>
+            </div>
+            <div class="risk-item">
+              <span>📋 Mandatory breach notification requirements</span>
+            </div>
+          </div>
+        </div>
+        {{/if}}
+
+        {{#if has_data_exposure}}
+        <div class="impact-category">
+          <h4><span class="impact-icon">🔓</span> Data Protection Risks</h4>
+          <div class="impact-description">
+            Exposed sensitive data and inadequate protection mechanisms threaten customer privacy.
+          </div>
+          <div class="impact-risks">
+            <div class="risk-item">
+              <span>💳 Customer payment data exposure risk</span>
+            </div>
+            <div class="risk-item">
+              <span>👥 Personal information breach liability</span>
+            </div>
+            <div class="risk-item">
+              <span>🔒 Intellectual property theft vulnerability</span>
+            </div>
+          </div>
+        </div>
+        {{/if}}
+      </div>
+    </section>
+
+    <section class="recommendations">
+      <h3>AI-Generated Strategic Recommendations</h3>
+      
+      <div class="recommendation-grid">
+        {{#each findings}}
+        {{#if ai_remediation}}
+        <div class="recommendation">
+          <span class="recommendation-priority priority-{{toLowerCase ai_remediation.priority}}">{{ai_remediation.priority}} Priority</span>
+          <h4>{{title}}</h4>
+          <p>{{ai_remediation.description}}</p>
+          {{#if ai_remediation.impact}}
+          <div style="margin-top: var(--space-2); padding: var(--space-2); background: var(--accent-soft); border-radius: 4px; font-size: var(--fs-0);">
+            <strong>Business Impact:</strong> {{ai_remediation.impact}}
+          </div>
+          {{/if}}
+        </div>
+        {{/if}}
+        {{/each}}
+
+        {{#if eal_summary}}
+        <div class="recommendation">
+          <span class="recommendation-priority priority-high">Risk Mitigation</span>
+          <h4>Cybersecurity Insurance Review</h4>
+          <p>Given the ${{{format_currency eal_summary.total_eal_ml}}} annual risk exposure, review current cybersecurity insurance coverage to ensure adequate protection against identified threats and compliance violations.</p>
+        </div>
+        {{/if}}
+
+        <div class="recommendation">
+          <span class="recommendation-priority priority-medium">Strategic Initiative</span>
+          <h4>Establish Ongoing Security Program</h4>
+          <p>Develop a comprehensive cybersecurity program including regular vulnerability assessments, employee training, incident response procedures, and vendor risk management to prevent future exposures.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="finding-categories">
+      <h3>Security Finding Categories</h3>
+      
+      <div class="category-grid">
+        {{#if has_infrastructure_issues}}
+        <div class="category-card">
+          <div class="category-header">
+            <div class="category-title">Infrastructure Security</div>
+            <div class="category-count">{{infrastructure_count}}</div>
+          </div>
+          <div class="category-description">
+            Server configurations, network security, and system hardening issues that expose core infrastructure to attack.
+          </div>
+        </div>
+        {{/if}}
+
+        {{#if has_application_issues}}
+        <div class="category-card">
+          <div class="category-header">
+            <div class="category-title">Application Vulnerabilities</div>
+            <div class="category-count">{{application_count}}</div>
+          </div>
+          <div class="category-description">
+            Web application security flaws including authentication bypasses, injection attacks, and insecure data handling.
+          </div>
+        </div>
+        {{/if}}
+
+        {{#if has_email_security_issues}}
+        <div class="category-card">
+          <div class="category-header">
+            <div class="category-title">Email Security</div>
+            <div class="category-count">{{email_count}}</div>
+          </div>
+          <div class="category-description">
+            SPF, DMARC, and DKIM configuration issues that enable phishing attacks and email fraud targeting your organization.
+          </div>
+        </div>
+        {{/if}}
+
+        {{#if has_compliance_issues}}
+        <div class="category-card">
+          <div class="category-header">
+            <div class="category-title">Compliance Violations</div>
+            <div class="category-count">{{compliance_count}}</div>
+          </div>
+          <div class="category-description">
+            Accessibility standards, privacy regulations, and industry compliance requirements not being met.
+          </div>
+        </div>
+        {{/if}}
+
+        {{#if has_data_exposure}}
+        <div class="category-card">
+          <div class="category-header">
+            <div class="category-title">Data Protection</div>
+            <div class="category-count">{{data_exposure_count}}</div>
+          </div>
+          <div class="category-description">
+            Exposed sensitive information, inadequate encryption, and insufficient access controls protecting business data.
+          </div>
+        </div>
+        {{/if}}
+
+        {{#if has_config_issues}}
+        <div class="category-card">
+          <div class="category-header">
+            <div class="category-title">Configuration Security</div>
+            <div class="category-count">{{config_count}}</div>
+          </div>
+          <div class="category-description">
+            Insecure default configurations, exposed administrative interfaces, and misconfigured security settings.
+          </div>
+        </div>
+        {{/if}}
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p><strong>SimplCyber Executive Security Report</strong> • Generated {{report_date}} • Confidential</p>
+      <p>Assessment completed in {{duration_seconds}} seconds across {{modules_completed}} security modules</p>
+      <p>This report should be treated as confidential business information and shared only with authorized personnel</p>
+    </footer>
+  </main>
+</body>
+</html>

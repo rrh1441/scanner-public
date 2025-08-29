@@ -1,0 +1,27 @@
+[
+  {
+    "companyName": "Example Corp",
+    "domain": "example.com",
+    "tags": ["tech", "startup"]
+  },
+  {
+    "companyName": "Acme Industries",
+    "domain": "acme.com",
+    "tags": ["manufacturing"]
+  },
+  {
+    "companyName": "Global Finance Ltd",
+    "domain": "globalfinance.com",
+    "tags": ["financial", "enterprise"]
+  },
+  {
+    "companyName": "Tech Innovations Inc",
+    "domain": "techinnovations.io",
+    "tags": ["tech", "saas"]
+  },
+  {
+    "companyName": "Healthcare Solutions",
+    "domain": "healthcaresolutions.org",
+    "tags": ["healthcare", "nonprofit"]
+  }
+]

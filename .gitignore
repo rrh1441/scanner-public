@@ -1,0 +1,76 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+.pnp.loader.mjs
+
+# Build outputs
+dist/
+/build
+/.next/
+/out/
+
+# Environment files
+.env
+.env.local
+.env*.local
+.env.docker
+.env.new
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+*.pem
+
+# IDE
+.vscode/
+.idea/
+
+# Testing
+/coverage
+.nyc_output/
+
+# Security scanning artifacts
+.testssl/
+__pycache__/
+*.pyc
+artifacts/
+.artifacts/
+.tmp/
+.cache/
+temp/
+
+# Generated scan reports
+apps/workers/scan-reports/
+scan-reports/
+
+# Deployment
+.wrangler/
+.dev.vars
+.vercel
+
+# GCP specific (keep local only)
+.gcp/
+gcp-key.json
+service-account*.json
+app.yaml
+# Note: cloudbuild*.yaml and docker-compose*.yaml should be tracked
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Turbo
+.turbo/
+
+# Certificates
+*.key
+*.cert
+
+# Yarn
+.yarn/

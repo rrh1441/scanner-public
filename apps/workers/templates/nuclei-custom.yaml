@@ -1,0 +1,232 @@
+id: supabase-unauthenticated-access
+
+info:
+  name: Supabase Unauthenticated Access
+  author: dealbrief-scanner
+  severity: high
+  description: Detects unauthenticated access to Supabase endpoints
+  tags: supabase,database,unauth
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/rest/v1/"
+      - "{{BaseURL}}/auth/v1/"
+      - "{{BaseURL}}/storage/v1/"
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        words:
+          - "supabase"
+          - "postgrest"
+        condition: or
+      - type: status
+        status:
+          - 200
+          - 401
+
+---
+
+id: neon-database-exposure
+
+info:
+  name: Neon Database Connection Exposure
+  author: dealbrief-scanner
+  severity: critical
+  description: Detects exposed Neon database connection strings
+  tags: neon,database,exposure
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/.env"
+      - "{{BaseURL}}/config.json"
+      - "{{BaseURL}}/config.js"
+
+    matchers:
+      - type: regex
+        regex:
+          - "postgresql://.*@.*\\.neon\\.tech/.*"
+          - "DATABASE_URL.*neon\\.tech"
+
+---
+
+id: s3-bucket-misconfiguration
+
+info:
+  name: S3 Bucket Misconfiguration
+  author: dealbrief-scanner
+  severity: high
+  description: Detects S3 bucket misconfigurations
+  tags: s3,aws,bucket,misconfiguration
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}"
+
+    matchers:
+      - type: word
+        words:
+          - "ListBucketResult"
+          - "Key"
+          - "LastModified"
+        condition: and
+
+---
+
+id: gcs-bucket-exposure
+
+info:
+  name: Google Cloud Storage Bucket Exposure
+  author: dealbrief-scanner
+  severity: high
+  description: Detects exposed GCS buckets
+  tags: gcs,google,bucket,exposure
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}"
+
+    matchers:
+      - type: word
+        words:
+          - "storage.googleapis.com"
+          - "ListBucketResult"
+        condition: and
+
+---
+
+id: exposed-admin-panels-refined
+
+info:
+  name: Exposed Admin Login Panels (Refined)
+  author: dealbrief-scanner
+  severity: medium
+  description: Detects known admin login panels based on specific title tags and form fields.
+  tags: admin,panel,exposure,login
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/wp-login.php"
+      - "{{BaseURL}}/administrator/index.php"
+      - "{{BaseURL}}/admin/login"
+
+    matchers-condition: or
+    matchers:
+      # WordPress
+      - type: word
+        part: body
+        words:
+          - "<title>Log In &lsaquo; WordPress</title>"
+          - 'name="log"'
+          - 'name="pwd"'
+        condition: and
+      # Joomla
+      - type: word
+        part: body
+        words:
+          - '<title>Joomla! Administrator</title>'
+          - 'name="username"'
+          - 'name="passwd"'
+        condition: and
+      # Generic login indicators
+      - type: word
+        part: body
+        words:
+          - '<title>Admin</title>'
+          - 'name="username"'
+          - 'name="password"'
+        condition: and
+
+---
+
+id: exposed-env-files
+
+info:
+  name: Exposed Environment Files
+  author: dealbrief-scanner
+  severity: high
+  description: Detects exposed environment configuration files
+  tags: env,config,exposure
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/.env"
+      - "{{BaseURL}}/.env.local"
+      - "{{BaseURL}}/.env.production"
+      - "{{BaseURL}}/.env.development"
+      - "{{BaseURL}}/config.json"
+      - "{{BaseURL}}/config.yaml"
+      - "{{BaseURL}}/config.yml"
+
+    matchers:
+      - type: word
+        words:
+          - "API_KEY"
+          - "SECRET"
+          - "PASSWORD"
+          - "TOKEN"
+          - "DATABASE_URL"
+        condition: or
+
+---
+
+id: graphql-introspection
+
+info:
+  name: GraphQL Introspection Enabled
+  author: dealbrief-scanner
+  severity: medium
+  description: Detects GraphQL endpoints with introspection enabled
+  tags: graphql,introspection
+
+http:
+  - method: POST
+    path:
+      - "{{BaseURL}}/graphql"
+      - "{{BaseURL}}/api/graphql"
+      - "{{BaseURL}}/v1/graphql"
+    
+    body: |
+      {"query": "{ __schema { types { name } } }"}
+    
+    headers:
+      Content-Type: "application/json"
+
+    matchers:
+      - type: word
+        words:
+          - "__schema"
+          - "types"
+        condition: and
+
+---
+
+id: cors-misconfiguration
+
+info:
+  name: CORS Misconfiguration
+  author: dealbrief-scanner
+  severity: medium
+  description: Detects CORS misconfigurations
+  tags: cors,misconfiguration
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}"
+    headers:
+      Origin: "https://evil.com"
+
+    matchers:
+      - type: word
+        part: header
+        words:
+          - "Access-Control-Allow-Origin: *"
+          - "Access-Control-Allow-Origin: https://evil.com"
+        condition: or

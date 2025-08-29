@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DealBrief Security Scanner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input[type="text"], input[type="url"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        input[type="text"]:focus, input[type="url"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .scan-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .scan-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .scan-btn:active {
+            transform: translateY(0);
+        }
+        
+        .scan-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.loading {
+            background: #cce7ff;
+            color: #004085;
+            border: 1px solid #b3d7ff;
+        }
+        
+        .modules-info {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .modules-info h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .modules-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 14px;
+            color: #5a6c7d;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🛡️ DealBrief Scanner</div>
+            <div class="subtitle">Comprehensive Security Due Diligence</div>
+        </div>
+        
+        <form id="scanForm">
+            <div class="form-group">
+                <label for="companyName">Company Name</label>
+                <input type="text" id="companyName" name="companyName" placeholder="e.g., Acme Corporation" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="companyUrl">Company Domain</label>
+                <input type="text" id="companyUrl" name="companyUrl" placeholder="e.g., example.com" required>
+            </div>
+            
+            <button type="submit" class="scan-btn" id="scanBtn">
+                Start Security Scan
+            </button>
+        </form>
+        
+        <div id="status" class="status"></div>
+        
+        <div class="modules-info">
+            <h3>Security Modules</h3>
+            <div class="modules-list">
+                <div>• SpiderFoot Discovery</div>
+                <div>• DNS Twist</div>
+                <div>• CRM Exposure</div>
+                <div>• File Hunt</div>
+                <div>• Shodan Infrastructure</div>
+                <div>• Database Scan</div>
+                <div>• TLS Security</div>
+                <div>• Nuclei Vulnerabilities</div>
+                <div>• Rate Testing</div>
+                <div>• SPF/DMARC</div>
+                <div>• TruffleHog Secrets</div>
+                <div>• AI Report Generation</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('scanForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const companyName = document.getElementById('companyName').value;
+            const companyUrl = document.getElementById('companyUrl').value;
+            const statusDiv = document.getElementById('status');
+            const scanBtn = document.getElementById('scanBtn');
+            
+            // Clean domain (remove protocol and www)
+            const domain = companyUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+            
+            // Update UI
+            scanBtn.disabled = true;
+            scanBtn.innerHTML = '<div class="spinner"></div>Initiating Scan...';
+            statusDiv.className = 'status loading';
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = '🔍 Starting comprehensive security scan...';
+            
+            try {
+                const response = await fetch('/scan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        companyName: companyName,
+                        domain: domain
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.className = 'status success';
+                    statusDiv.innerHTML = `✅ Scan initiated successfully!<br>
+                        <strong>Scan ID:</strong> ${result.scanId}<br>
+                        <small>This will take 10-15 minutes. Two AI reports will be generated.</small>`;
+                } else {
+                    throw new Error(result.error || 'Scan initiation failed');
+                }
+                
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.innerHTML = `❌ Error: ${error.message}`;
+            } finally {
+                scanBtn.disabled = false;
+                scanBtn.innerHTML = 'Start Security Scan';
+            }
+        });
+        
+        // Auto-format domain input
+        document.getElementById('companyUrl').addEventListener('input', function(e) {
+            let value = e.target.value;
+            // Remove protocol if user types it
+            value = value.replace(/^https?:\/\//, '');
+            // Remove www if user types it
+            value = value.replace(/^www\./, '');
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html> 

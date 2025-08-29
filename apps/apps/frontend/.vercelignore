@@ -1,0 +1,20 @@
+# Ignore backend-related directories for Vercel deployment
+../../../apps/api-main/
+../../../apps/workers/
+../../../clean-deploy/
+../../../.gcp/
+../../../Dockerfile*
+../../../*.sh
+../../../*.yaml
+../../../*.yml
+../../../gcp-*
+
+# Only deploy frontend
+!src/
+!public/
+!package.json
+!next.config.ts
+!tsconfig.json
+!tailwind.config.ts
+!postcss.config.mjs
+!eslint.config.mjs
